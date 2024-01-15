@@ -1,6 +1,6 @@
-import './App.css';
-import React, { useEffect, useRef, useState } from 'react';
-import { items } from './data';
+import "./App.css";
+import React, { useEffect, useRef, useState } from "react";
+import { items } from "./data";
 import {
   AutoSizer,
   CellMeasurer,
@@ -8,9 +8,8 @@ import {
   InfiniteLoader,
   List,
   WindowScroller,
-} from 'react-virtualized';
+} from "react-virtualized";
 function App() {
-
   const [withScrollElement, setWithScrollElement] = useState(false);
   const mainRef = useRef(null);
   const infiniteLoaderRef = useRef(null);
@@ -23,14 +22,16 @@ function App() {
     defaultHeight: 52,
   });
 
-  const isRowLoaded = ({index}) => {
+  const isRowLoaded = ({ index }) => {
     return index < displayedCount - 1;
   };
 
   const loadMoreRow = () => {
     return new Promise((resolve) => {
       setDisplayedCount(
-        displayedCount + displayCount < items.length ? displayedCount + displayCount : items.length,
+        displayedCount + displayCount < items.length
+          ? displayedCount + displayCount
+          : items.length,
       );
       resolve();
     });
@@ -39,9 +40,16 @@ function App() {
   const rowRenderer = ({ key, index, style, parent, isScrolling }) => {
     const item = items[index];
     return (
-      <CellMeasurer key={key} cache={cache} parent={parent} columnIndex={0} rowIndex={index} style={style}>
+      <CellMeasurer
+        key={key}
+        cache={cache}
+        parent={parent}
+        columnIndex={0}
+        rowIndex={index}
+        style={style}
+      >
         <div key={key} style={style}>
-         Item numéro : {item}
+          Item numéro : {item}
         </div>
       </CellMeasurer>
     );
@@ -49,15 +57,17 @@ function App() {
 
   return (
     <div className="App">
-      <header>
-        This is a sticky header
-      </header>
+      <header>This is a sticky header</header>
 
       <main ref={mainRef}>
-        This is the main part
-
-        withScrollElement: <input type="checkbox" checked={withScrollElement} onChange={() => setWithScrollElement(!withScrollElement)} />
-
+        <hr />
+        Activate scrollElement="mainRef.current" :
+        <input
+          type="checkbox"
+          checked={withScrollElement}
+          onChange={() => setWithScrollElement(!withScrollElement)}
+        />
+        <hr />
         <InfiniteLoader
           isRowLoaded={isRowLoaded}
           loadMoreRows={loadMoreRow}
@@ -66,7 +76,7 @@ function App() {
         >
           {({ onRowsRendered, registerChild }) => (
             <WindowScroller
-             scrollElement={withScrollElement ? mainRef.current : window}
+              scrollElement={withScrollElement ? mainRef.current : window}
             >
               {({ height, isScrolling, scrollTop }) => (
                 <AutoSizer disableHeight>
@@ -89,9 +99,7 @@ function App() {
               )}
             </WindowScroller>
           )}
-
         </InfiniteLoader>
-
       </main>
     </div>
   );
